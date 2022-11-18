@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InterpretationView: View {
     @Binding var casts: [CastResult]
-    @State var result: CastResult
+    let result: CastResult
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -18,20 +18,22 @@ struct InterpretationView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
+        let cast = casts.randomElement()
+        
         NavigationView {
             ScrollView {
             LazyVStack(spacing: 12) {
-                Text((result.yesNoMaybe)).font(.title)
-                Text(dateFormatter.string(from: result.date))
-                Text(result.interpretation)
+                Text((cast!.yesNoMaybe)).font(.title)
+                Text(dateFormatter.string(from: cast!.date))
+                Text(cast!.interpretation)
                 Button("Save Cast"){
                     
                 }
             };
             }
             .padding()
-            .navigationTitle(result.odu)
-            .toolbar {
+            .navigationTitle(cast!.odu)
+            .toolbar {  
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         presentationMode.wrappedValue.dismiss()
