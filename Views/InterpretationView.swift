@@ -10,24 +10,36 @@ import SwiftUI
 struct InterpretationView: View {
     @Binding var casts: [CastResult]
     @State var result: CastResult
-    let formatted = Date().formatted(
-        .dateTime
-            .day().month().year()
-    )
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
+    }()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationView {
             ScrollView {
             LazyVStack(spacing: 12) {
-                    Text((String)(result.yesNoBoolean)).font(.title)
-                let formatted = Date().formatted(.iso8601)
-                    ForEach(casts, id: \.id, content: { cast in
-                        Text(cast.odu).font(.title)
-                    });
-                };
+                Text((result.yesNoMaybe)).font(.title)
+                Text(dateFormatter.string(from: result.date))
+                Text(result.interpretation)
+                Button("Save Cast"){
+                    
+                }
+            };
             }
             .padding()
             .navigationTitle(result.odu)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "arrow.left")
+                    }
+                }
+            }
         }
     }
 }

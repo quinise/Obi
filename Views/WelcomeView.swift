@@ -12,19 +12,32 @@ struct WelcomeView: View {
     @State var isCastViewPresented = false
         
     var body: some View {
-        VStack(spacing: 12) {
-            Button("Cast") {
-                isCastViewPresented = true
-            }
-            .background(Color(UIColor.systemTeal))
-            .font(.system(size:32)) // prefered to title
-            .foregroundColor(.white) // font color
-            .cornerRadius(8)
-            .padding()
-            .fullScreenCover(isPresented: $isCastViewPresented) {
-                InterpretationView(casts: $casts, result: result)
+        NavigationView {
+            VStack(spacing: 12) {
+                Text("Aalaffia, NAME")
+                Button("Cast") {
+                    isCastViewPresented = true
+                }
+                .background(Color(UIColor.systemTeal))
+                .font(.system(size:32)) // prefered to title
+                .foregroundColor(.white) // font color
+                .cornerRadius(8)
+                .padding()
+                .fullScreenCover(isPresented: $isCastViewPresented) {
+                    InterpretationView(casts: $casts, result: result)
+                }
             }
         }
+        .padding()
+        .navigationTitle("Mobi")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: CastsListView()) {
+                    Image(systemName: "list.bullet.circle")
+                }
+            }
+        }
+        
     }
         
 }
