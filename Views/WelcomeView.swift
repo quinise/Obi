@@ -14,7 +14,7 @@ struct WelcomeView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 12) {
-                Text("Aalaffia, NAME")
+                Text("Aalaffia!")
                 Button("Cast") {
                     isCastViewPresented = true
                 }

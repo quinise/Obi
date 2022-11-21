@@ -5,6 +5,7 @@
 //  Created by Devin Ercolano on 11/16/22.
 //
 
+import Foundation
 import CoreData
 
 struct PersistenceController {
