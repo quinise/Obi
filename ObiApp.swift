@@ -13,6 +13,7 @@ struct ObiApp: App {
     @ObservedObject private var castData = CastData()
     @State var castResult = CastResult(odu: "Test Odu", date: Date(), yesNoMaybe: "Maybe", maleObi1: 0, maleObi2: 0, femaleObi1: 0, femaleObi2: 0, interpretation: "interpretation")
     let persistenceController = PersistenceController.shared
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some Scene {
         WindowGroup {
@@ -21,8 +22,9 @@ struct ObiApp: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            .onAppear {
-                castData.load()
+//                castData.load()
+            .onChange(of: scenePhase) { _ in
+                persistenceController.save()
             }
         
         }
