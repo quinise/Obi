@@ -18,7 +18,7 @@ struct ObiApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                WelcomeView(casts: $castData.casts, result: castResult)
+                SplashScreenView(casts: $castData.casts, result: castResult)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
