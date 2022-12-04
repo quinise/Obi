@@ -16,52 +16,68 @@ struct CastView: View {
         return formatter
     }()
     
-    
-    
-    var body: some View {
+    @State private var orientation = UIDeviceOrientation.unknown
+      
+    @ViewBuilder var subView : some View {
         NavigationView {
             ZStack {
                 Color.limeCream
                     .ignoresSafeArea()
-                VStack(spacing: 12) {
-                    Text((cast.yesNoMaybe ??  "")).font(.title)
+                    VStack(spacing: 12) {
+                        Text((cast.yesNoMaybe ??  "")).font(.title)
+                            .padding()
+                        Divider().frame(width: 200)
+                        HStack {
+                        Text("Odu: ")
+                        Text(cast.odu)
+                        }
+                        HStack {
+                            Text("Cast Date ").bold()
+                                .padding(.trailing, 23)
+                            Text(dateFormatter.string(from: cast.timestamp))
+                        }
                         .padding()
-                    Divider().frame(width: 200)
+                        Divider().frame(width: 200)
+                        Text("Interpretation").bold()
+                        Text(cast.interpretation)
                     HStack {
-                    Text("Odu: ")
-                    Text(cast.odu ?? "")
-                    }
-                    HStack {
-                        Text("Cast Date ").bold()
-                            .padding(.trailing, 23)
-                        Text(dateFormatter.string(from: cast.timestamp ?? Date()))
+                        Image(cast.maleObi1)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.maleObi2)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.femaleObi1)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.femaleObi2)
+                            .resizable()
+                            .scaledToFit()
                     }
                     .padding()
-                    Divider().frame(width: 200)
-                    Text("Interpretation").bold()
-                    Text(cast.interpretation ?? "")
-                HStack {
-                    Image(cast.maleObi1 ?? "")
-                        .resizable()
-                        .scaledToFit()
-                    Image(cast.maleObi2 ?? "")
-                        .resizable()
-                        .scaledToFit()
-                    Image(cast.femaleObi1 ?? "")
-                        .resizable()
-                        .scaledToFit()
-                    Image(cast.femaleObi2 ?? "")
-                        .resizable()
-                        .scaledToFit()
+                    .buttonStyle(.bordered)
+                    .foregroundColor(.white)
+                    .cornerRadius(30)
+                    .shadow(radius: 20)
                 }
-                .padding()
-                .buttonStyle(.bordered)
-                .foregroundColor(.white)
-                .cornerRadius(30)
-                .shadow(radius: 20)
-            }
             .padding() // ToDo change to custom green color
-            .navigationBarTitle(cast.title ?? "", displayMode: .inline)
+            .navigationBarTitle(cast.title, displayMode: .inline)
+            }
+        }
+    }
+    
+    var body: some View {
+        Group {
+            if orientation.isLandscape {
+                ScrollView(.vertical, showsIndicators: false) { //ToDo scroll not scrolling all the way down
+                    subView
+                }
+                
+            } else {
+                VStack {
+                    subView
+                    Spacer()
+                }
             }
         }
     }

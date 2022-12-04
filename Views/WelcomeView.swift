@@ -120,7 +120,7 @@ struct WelcomeView: View {
             }
         }
         .padding()
-        .navigationTitle("Mobi")
+        .navigationTitle("Mobi - Obi for iOS")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: CastsListView(cast: result).environment(\.managedObjectContext, controller.container.viewContext).environmentObject(controller)) {

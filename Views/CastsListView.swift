@@ -15,27 +15,24 @@ struct CastsListView: View {
     
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title)]) var castList: FetchedResults<Cast>
     @FetchRequest(sortDescriptors: []) var casts: FetchedResults<Cast>
-//    @State var cast: Cast!
     
     var body: some View {
-        ZStack {
-            Color.limeCream
-                .ignoresSafeArea()
-            List {
-                ForEach(cast) { cast in
-                    NavigationLink (destination: CastView(cast: cast)) {
-                        Text(cast.title ?? "")
-                            .foregroundColor(Color.forrest)
-                    }
+        List {
+            ForEach(cast) { cast in
+                NavigationLink (destination: CastView(cast: cast)) {
+                    Text(cast.title ?? "")
+                        .foregroundColor(Color.forrest)
                 }
-                .onDelete(perform: removeAtIndices)
             }
-            .foregroundColor(Color.forrest)
-            .onAppear {
-                if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
-                   let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
-                    cast = castData
-                }
+            .onDelete(perform: removeAtIndices)
+        }
+        .background(Color.limeCream)
+        .scrollContentBackground(.hidden)
+        .foregroundColor(Color.forrest)
+        .onAppear {
+            if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
+               let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
+                cast = castData
             }
         }
     }
