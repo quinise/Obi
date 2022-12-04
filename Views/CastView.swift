@@ -22,11 +22,12 @@ struct CastView: View {
         NavigationView {
             ZStack {
                 Color.limeCream
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(.all)
                     VStack(spacing: 12) {
                         Text((cast.yesNoMaybe ??  "")).font(.title)
                             .padding()
                         Divider().frame(width: 200)
+                            .overlay(Color.forrest)
                         HStack {
                         Text("Odu: ")
                         Text(cast.odu)
@@ -38,6 +39,7 @@ struct CastView: View {
                         }
                         .padding()
                         Divider().frame(width: 200)
+                            .overlay(Color.forrest)
                         Text("Interpretation").bold()
                         Text(cast.interpretation)
                     HStack {
@@ -79,6 +81,9 @@ struct CastView: View {
                     Spacer()
                 }
             }
+        }
+        .onRotate { newOrientation in
+            orientation = newOrientation
         }
     }
 }
