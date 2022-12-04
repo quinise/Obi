@@ -11,62 +11,73 @@ import SwiftUI
 struct CastResult: Identifiable, Codable {
     let id: UUID
     var odu: String
-    var date: Date
+    var timestamp: Date
     var yesNoMaybe: String
-    var maleObi1: Int
-    var maleObi2: Int
-    var femaleObi1: Int
-    var femaleObi2: Int
+    var maleObi1: String
+    var maleObi2: String
+    var femaleObi1: String
+    var femaleObi2: String
     var interpretation: String
-    
-    init(id: UUID = UUID(), odu: String, date: Date, yesNoMaybe: String, maleObi1: Int, maleObi2: Int, femaleObi1: Int, femaleObi2: Int, interpretation: String) {
+    var title: String
+//    init () {
+//        odu = ""
+//        timestamp = Date()
+//        yesNoMaybe = ""
+//        maleObi1 = ""
+//        maleObi2 = ""
+//        femaleObi1 = ""
+//        femaleObi2 = ""
+//        interpretation = ""
+//        title = ""
+//    }
+    init(id: UUID = UUID(), odu: String, timestamp: Date, yesNoMaybe: String, maleObi1: String, maleObi2: String, femaleObi1: String, femaleObi2: String, interpretation: String, title: String) {
         self.id = id
         self.odu = odu
-        self.date = date
+        self.timestamp = Date()
         self.yesNoMaybe = yesNoMaybe
         self.maleObi1 = maleObi1
         self.maleObi2 = maleObi2
         self.femaleObi1 = femaleObi1
         self.femaleObi2 = femaleObi2
         self.interpretation = interpretation
+        self.title = title
     }
 }
 
-extension CastResult {
+extension WelcomeView {
     static var data: [CastResult] {
-        [CastResult(odu: "Aalaffia - Ogbe", date: Date(), yesNoMaybe: "Yes", maleObi1: 1, maleObi2: 1, femaleObi1: 1, femaleObi2: 1, interpretation: "Symbolizes good general welfare"),
-         CastResult(odu: "Yeku - Oyeku", date: Date(), yesNoMaybe: "No", maleObi1: 0, maleObi2: 0, femaleObi1: 0, femaleObi2: 0, interpretation: "No light - potential delays and possible protection from ancestors..."),
-         CastResult(odu: "Okanran - Ilera", date: Date(), yesNoMaybe: "Maybe", maleObi1: 1, maleObi2: 0, femaleObi1: 0, femaleObi2: 0, interpretation: "Good health and success!"),
-         CastResult(odu: "Okanran - Ilera", date: Date(), yesNoMaybe: "Maybe", maleObi1: 0, maleObi2: 1, femaleObi1: 0, femaleObi2: 0, interpretation: "Good health and success!"),
-         CastResult(odu: "Okanran-Aje", date: Date(), yesNoMaybe: "No", maleObi1: 0, maleObi2: 1, femaleObi1: 0, femaleObi2: 0, interpretation: "Abundance"),
-         CastResult(odu: "Okanran-Aje", date: Date(), yesNoMaybe: "No", maleObi1: 1, maleObi2: 0, femaleObi1: 0, femaleObi2: 0, interpretation: "Abundance"),
-         CastResult(odu: "Okanran-Aje", date: Date(), yesNoMaybe: "No", maleObi1: 0, maleObi2: 0, femaleObi1: 1, femaleObi2: 0, interpretation: "Abundance"),
-         CastResult(odu: "Okanran-Aje", date: Date(), yesNoMaybe: "No", maleObi1: 0, maleObi2: 0, femaleObi1: 0, femaleObi2: 1, interpretation: "Abundance"),
-         CastResult(odu: "Ejife-Ejire", date: Date(), yesNoMaybe: "Yes", maleObi1: 0, maleObi2: 0, femaleObi1: 1, femaleObi2: 1, interpretation: "criminality, arguments"),
-         CastResult(odu: "Ejife-Ero", date: Date(), yesNoMaybe: "Maybe", maleObi1: 1, maleObi2: 0, femaleObi1: 1, femaleObi2: 1, interpretation: "calmness and whole-mindedness"),
-         CastResult(odu: "Ejife-Ero", date: Date(), yesNoMaybe: "Maybe", maleObi1: 0, maleObi2: 1, femaleObi1: 1, femaleObi2: 1, interpretation: "calmness and whole-mindedness"),
-         CastResult(odu: "Obita-Etawa", date: Date(), yesNoMaybe: "Maybe", maleObi1: 0, maleObi2: 1, femaleObi1: 1, femaleObi2: 1, interpretation: "No arguments, living harmoniously"),
-         CastResult(odu: "Obita-Etawa", date: Date(), yesNoMaybe: "Maybe", maleObi1: 1, maleObi2: 0, femaleObi1: 1, femaleObi2: 1, interpretation: "No arguments, living harmoniously"),
-         CastResult(odu: "Akita-Etawa", date: Date(), yesNoMaybe: "Maybe", maleObi1: 1, maleObi2: 1, femaleObi1: 0, femaleObi2: 1, interpretation: "Hard work is rewarded"),
-         CastResult(odu: "Akita-Etawa", date: Date(), yesNoMaybe: "Maybe", maleObi1: 1, maleObi2: 1, femaleObi1: 1, femaleObi2: 0, interpretation: "Hard work is rewarded")
+        [CastResult(odu: "Aalaffia - Ogbe", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Symbolizes good general welfare", title: ""),
+         CastResult(odu: "Yeku - Oyeku", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "No light - potential delays and possible protection from ancestors...", title: ""),
+         CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
+         CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
+         CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+         CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "Male.Obi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+         CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+         CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Abundance", title: ""),
+         CastResult(odu: "Ejife-Ejire", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "criminality, arguments", title: ""),
+         CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
+         CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
+         CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
+         CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
+         CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Up", interpretation: "Hard work is rewarded", title: ""),
+         CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Hard work is rewarded", title: "")
         ]
     }
 }
 
-extension CastResult {
-    struct Data {
-        var title: String = ""
-        var odu: String = ""
-        var date: Date = Date()
-        var yesNoMaybe = ""
-        var maleObi1: Int = Int.random(in: 1..<2)
-        var maleObi2: Int = Int.random(in: 1..<2)
-        var femaleObi1: Int = Int.random(in: 1..<2)
-        var femaleObi2: Int = Int.random(in: 1..<2)
-        var interpretation = ""
-    }
+//extension CastResult {
+//    struct Data {
+//        var title: String = ""
+//        var odu: String = ""
+//        var date: Date = Date()
+//        var yesNoMaybe = ""
+//        var maleObi1: Int = Int.random(in: 1..<2)
+//        var maleObi2: Int = Int.random(in: 1..<2)
+//        var femaleObi1: Int = Int.random(in: 1..<2)
+//        var femaleObi2: Int = Int.random(in: 1..<2)
+//        var interpretation = ""
+//    }
     
-    var data: Data {
-        return Data(odu: odu, date: date, yesNoMaybe: yesNoMaybe, maleObi1: maleObi1, maleObi2: maleObi2,  femaleObi1: femaleObi1, femaleObi2: femaleObi2, interpretation: interpretation)
-    }
-}
+//    var data: Data {
+//        return Data(odu: odu, timestamp: Date(), yesNoMaybe: yesNoMaybe, maleObi1: maleObi1, maleObi2: maleObi2,  femaleObi1: femaleObi1, femaleObi2: femaleObi2, interpretation: interpretation)
+//    }

@@ -1,16 +1,16 @@
+////
+////  CastObjectController.swift
+////  Obi
+////
+////  Created by Devin Ercolano on 11/16/22.
+////
 //
-//  CastObjectController.swift
-//  Obi
+//import Foundation
+//import SwiftUI
 //
-//  Created by Devin Ercolano on 11/16/22.
+//class CastsObjectController : ObservableObject {
+//    @Published var results = [CastResult]()
+//        static let shared = CastsObjectController()
 //
-
-import Foundation
-import SwiftUI
-
-class CastsObjectController : ObservableObject {
-    @Published var results = [CastResult]()
-        static let shared = CastsObjectController()
-
-        init(){}
-}
+//        init(){}
+//}

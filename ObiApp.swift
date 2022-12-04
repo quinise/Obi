@@ -10,23 +10,22 @@ import CoreData
 
 @main
 struct ObiApp: App {
-    @ObservedObject private var castData = CastData()
-    @State var castResult = CastResult(odu: "Test Odu", date: Date(), yesNoMaybe: "Maybe", maleObi1: 0, maleObi2: 0, femaleObi1: 0, femaleObi2: 0, interpretation: "interpretation")
-    let persistenceController = PersistenceController.shared
+    init() {
+        let dataController = CoreDataController()
+        _controller = StateObject(wrappedValue: dataController)
+    }
     @Environment(\.scenePhase) var scenePhase
-
+    @StateObject var controller: CoreDataController
+//    @StateObject private var castData = CastData()
+    
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                SplashScreenView(casts: $castData.casts, result: castResult)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            }
-            .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//                castData.load()
-            .onChange(of: scenePhase) { _ in
-                persistenceController.save()
-            }
-        
+                SplashScreenView()
+                    .environment(\.managedObjectContext, controller.container.viewContext)
+                    .environmentObject(controller)
+        }
+        .onChange(of: scenePhase) { newValue in
+            controller.save()
         }
     
     }

@@ -8,20 +8,17 @@
 import SwiftUI
 
 struct SplashScreenView: View {
-    @Binding  public var casts: [CastResult]
-    @State var result: CastResult
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.3
     @State var animate = false
     @State var endSplash = false
-    @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
        ZStack {
-           WelcomeView(casts: $casts, result: result)
+           WelcomeView()
             ZStack {
-                Color("Color")
+                Color("Color.kiwi")
                 Image("kola-nuts-xs")
                     .resizable()
                     .renderingMode(.original)
@@ -34,7 +31,7 @@ struct SplashScreenView: View {
             .onAppear(perform: animateSplash)
             .opacity(endSplash ? 0 : 1)
             .onAppear {
-                withAnimation(.easeIn(duration: 2.5)) {
+                withAnimation(.easeIn(duration: 3.5)) {
                     self.size = 0.9
                     self.opacity = 1.0
                 }
@@ -46,6 +43,7 @@ struct SplashScreenView: View {
             }
         }
     }
+    
     func animateSplash() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                 withAnimation(Animation.easeOut(duration: 1.00)) {

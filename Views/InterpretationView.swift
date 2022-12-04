@@ -8,67 +8,105 @@
 import SwiftUI
 
 struct InterpretationView: View {
+    @EnvironmentObject var controller: CoreDataController
     @State private var presentAlert = false
     @State private var title: String = ""
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) var moc
-    let persistenceController = PersistenceController.shared
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.odu)]) var Obi: FetchedResults<Cast>
-    @Binding var casts: [CastResult]
-    let result: CastResult
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.title)]) var Obi: FetchedResults<Cast>
+    let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
+    @State var castResult: [Cast] = []
+    @State var castResults: [CastResult] = []
+    @State var result: CastResult
+    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         return formatter
     }()
+    
+    
+    // ToDo this view needs more space between the title and YesNoMaybe property in landscape mode, this also needs to cover horizontal safeareas in portrait mode
     var body: some View {
-        let cast = casts.randomElement()
-        let db = Cast(context: moc)
+        let cast = result
+        let db = Cast(context: controller.container.viewContext)
 
         NavigationView {
-            ScrollView {
-            LazyVStack(spacing: 12) {
-//                Text((cast!.yesNoMaybe)).font(.title)
-//                Text(dateFormatter.string(from: cast!.date))
-//                Text(cast!.interpretation)
-                Button("Save Cast") {
-                    presentAlert = true
-                    db.odu = "working!"
-                        PersistenceController.shared.save()
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.kiwi, Color.limeCream]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+                VStack(spacing: 12) {
+                    Text((cast.yesNoMaybe)).font(.title)
+                    Text(dateFormatter.string(from: cast.timestamp))
+                    Text(cast.interpretation)
+                        .padding()
+                    HStack {
+                        Image(cast.maleObi1)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.maleObi2)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.femaleObi1)
+                            .resizable()
+                            .scaledToFit()
+                        Image(cast.femaleObi2)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                        .padding()
+                    Button("Save Cast") {
+                        print(title)
+                        presentAlert = true
+                    }
+                    .buttonStyle(.bordered)
+                    .background(Color.kiwi)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                    .cornerRadius(30)
+                    .shadow(radius: 20)
+                    .alert("Cast Title", isPresented: $presentAlert, actions: {
+                        TextField("Cast Title", text: $title)
+                        Button("Save", action: {
+                            //ToDo data validation on title, must not be code
+                            var castResult = CastResult(odu: cast.odu, timestamp: cast.timestamp, yesNoMaybe: cast.yesNoMaybe, maleObi1: cast.maleObi1, maleObi2: cast.maleObi2, femaleObi1: cast.femaleObi1, femaleObi2: cast.femaleObi2, interpretation: cast.interpretation, title: title)
+                            castResult.title = title
+                            castResults.append(castResult)
+                            controller.save(castResults)
+                            if let encoded = try? JSONEncoder().encode(castResults) {
+                                UserDefaults.standard.set(encoded, forKey: "cast")
+                            }
+                        })
+                        Button("Cancel", role: .cancel, action: {})
+                    }, message: {
+                        Text("Please enter a title")
+                    })
                 }
-                Text(title)
-                List (Obi) { obi in
-                    Text(obi.odu ?? "uknown")
-                    
-                }
-                Text("After List")
-//                .alert("Cast Title", isPresented: $presentAlert, actions:{
-//                    TextField("Title", text: $title)
-//
-//                    Button("Save", action: {})
-//                    Button("Cancel", role: .cancel, action: {}) //ToDo: don't refresh screen on alert-button press
-//                }, message: {
-//                    Text("Please enter a title")
-//                })
-            }
             }
             .padding()
-//            .navigationTitle(cast!.odu)
+            .navigationTitle(cast.odu)
             .toolbar {  
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         presentationMode.wrappedValue.dismiss()
+                        
                     } label: {
                         Image(systemName: "arrow.left")
                     }
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: CastsListView(cast: castResults).environmentObject(controller)) {
+                        Image(systemName: "list.bullet.circle")
+                    }
+                }
             }
+            .ignoresSafeArea()
         }
     }
 }
 
 //struct InterpretationView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        InterpretationView()
+//        InterpretationView(result: CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness"))
 //    }
 //}
