@@ -18,20 +18,24 @@ struct CastsListView: View {
 //    @State var cast: Cast!
     
     var body: some View {
-        List {
-            ForEach(cast) { cast in
-                NavigationLink (destination: CastView(cast: cast)) {
-                    Text(cast.title ?? "")
-                        .foregroundColor(Color.forrest)
+        ZStack {
+            Color.limeCream
+                .ignoresSafeArea()
+            List {
+                ForEach(cast) { cast in
+                    NavigationLink (destination: CastView(cast: cast)) {
+                        Text(cast.title ?? "")
+                            .foregroundColor(Color.forrest)
+                    }
                 }
+                .onDelete(perform: removeAtIndices)
             }
-            .onDelete(perform: removeAtIndices)
-        }
-        .foregroundColor(Color.forrest)
-        .onAppear {
-            if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
-               let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
-                cast = castData
+            .foregroundColor(Color.forrest)
+            .onAppear {
+                if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
+                   let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
+                    cast = castData
+                }
             }
         }
     }

@@ -19,17 +19,7 @@ struct CastResult: Identifiable, Codable {
     var femaleObi2: String
     var interpretation: String
     var title: String
-//    init () {
-//        odu = ""
-//        timestamp = Date()
-//        yesNoMaybe = ""
-//        maleObi1 = ""
-//        maleObi2 = ""
-//        femaleObi1 = ""
-//        femaleObi2 = ""
-//        interpretation = ""
-//        title = ""
-//    }
+
     init(id: UUID = UUID(), odu: String, timestamp: Date, yesNoMaybe: String, maleObi1: String, maleObi2: String, femaleObi1: String, femaleObi2: String, interpretation: String, title: String) {
         self.id = id
         self.odu = odu
@@ -64,20 +54,3 @@ extension WelcomeView {
         ]
     }
 }
-
-//extension CastResult {
-//    struct Data {
-//        var title: String = ""
-//        var odu: String = ""
-//        var date: Date = Date()
-//        var yesNoMaybe = ""
-//        var maleObi1: Int = Int.random(in: 1..<2)
-//        var maleObi2: Int = Int.random(in: 1..<2)
-//        var femaleObi1: Int = Int.random(in: 1..<2)
-//        var femaleObi2: Int = Int.random(in: 1..<2)
-//        var interpretation = ""
-//    }
-    
-//    var data: Data {
-//        return Data(odu: odu, timestamp: Date(), yesNoMaybe: yesNoMaybe, maleObi1: maleObi1, maleObi2: maleObi2,  femaleObi1: femaleObi1, femaleObi2: femaleObi2, interpretation: interpretation)
-//    }
