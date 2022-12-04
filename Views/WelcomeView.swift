@@ -70,7 +70,6 @@ extension View {
 
 struct WelcomeView: View {
     @State private var orientation = UIDeviceOrientation.unknown
-//    @State var isCastViewPresented = false
     @State private var isShowingInterpretationView = false
     @EnvironmentObject var controller: CoreDataController
     @State var finalResult: CastResult = CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
@@ -95,31 +94,37 @@ struct WelcomeView: View {
     
     @ViewBuilder var subView : some View {
         NavigationStack {
+        ZStack {
+            Color.limeCream
+                .ignoresSafeArea()
             VStack(spacing: 12) {
-                Text("Aalaffia!").bold()
-                    .font(.system(size: 58))
-                    .onShake {
-//                        $isShowingCastView = true
-                        finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-                    }
-                Image("kola-nuts")
-                    .resizable()
-                    .frame(width: 300, height: 300)
-                Button {
+            Text("Aalaffia!")
+                .font(Font.custom("Acme", size: 58, relativeTo: .title)) //ToDo custom font not implemented
+                .onShake {
                     finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-                    isShowingInterpretationView = true;
-                } label: {
-                    Text("Cast")
                 }
-                .font(.system(size:32)) // prefered to title
-                .foregroundColor(Color.forrest) // font color
-                .padding()
-                .border(Color.forrest, width: 3)
-                .cornerRadius(5)
+            Image("kola-nuts")
+                .resizable()
+                .frame(width: 300, height: 300)
+            Button {
+                finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                isShowingInterpretationView = true;
+            } label: {
+                Text("Cast")
             }
-            .navigationDestination(isPresented: $isShowingInterpretationView) {
-                InterpretationView(result: finalResult).environmentObject(controller)
-            }
+            .font(.system(size:32)) // prefered to title
+            .foregroundColor(Color.white) // font color
+            .padding()
+            .buttonStyle(.bordered)
+            .background(Color.kiwi) // ToDo remove inner darker rectangle
+            .fontWeight(.bold)
+            .cornerRadius(30)
+            .shadow(radius: 20)
+        }
+        .navigationDestination(isPresented: $isShowingInterpretationView) {
+            InterpretationView(result: finalResult).environmentObject(controller)
+        }
+    }
         }
         .padding()  
         .background(Color.limeCream)
