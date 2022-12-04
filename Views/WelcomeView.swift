@@ -70,7 +70,8 @@ extension View {
 
 struct WelcomeView: View {
     @State private var orientation = UIDeviceOrientation.unknown
-    @State var isCastViewPresented = false
+//    @State var isCastViewPresented = false
+    @State private var isShowingInterpretationView = false
     @EnvironmentObject var controller: CoreDataController
     @State var finalResult: CastResult = CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
     let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
@@ -93,33 +94,38 @@ struct WelcomeView: View {
        ]
     
     @ViewBuilder var subView : some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 12) {
                 Text("Aalaffia!").bold()
                     .font(.system(size: 58))
                     .onShake {
-                        isCastViewPresented = true
+//                        $isShowingCastView = true
                         finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
                     }
                 Image("kola-nuts")
                     .resizable()
                     .frame(width: 300, height: 300)
-                Button("Cast") {
-                    isCastViewPresented = true
+                Button {
                     finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                    isShowingInterpretationView = true;
+                } label: {
+                    Text("Cast")
                 }
-                .background(.white) // TODO add space around button text
                 .font(.system(size:32)) // prefered to title
                 .foregroundColor(Color.forrest) // font color
                 .padding()
                 .border(Color.forrest, width: 3)
                 .cornerRadius(5)
-                .fullScreenCover(isPresented: $isCastViewPresented) {
-                    InterpretationView(result: finalResult).environmentObject(controller)
-                }
+            }
+            .navigationDestination(isPresented: $isShowingInterpretationView) {
+                InterpretationView(result: finalResult).environmentObject(controller)
             }
         }
-        .padding()
+        .padding()  
+        .background(Color.limeCream)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accentColor(Color.forrest)
+        .ignoresSafeArea(.all)
         .navigationTitle("Mobi - Obi for iOS")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -132,7 +138,7 @@ struct WelcomeView: View {
     var body: some View {
         Group {
             if orientation.isLandscape {
-                ScrollView(.vertical, showsIndicators: false) { //ToDo scroll not scrolling all the way down
+                ScrollView(.vertical, showsIndicators: false) { //ToDo scroll scrolling all the way down
                     subView
                 }
             } else {

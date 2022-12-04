@@ -20,7 +20,7 @@ struct CastsListView: View {
         List {
             ForEach(cast) { cast in
                 NavigationLink (destination: CastView(cast: cast)) {
-                    Text(cast.title ?? "")
+                    Text(cast.title)
                         .foregroundColor(Color.forrest)
                 }
             }

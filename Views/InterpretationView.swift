@@ -28,9 +28,7 @@ struct InterpretationView: View {
     // ToDo this view needs more space between the title and YesNoMaybe property in landscape mode, this also needs to cover horizontal safeareas in portrait mode
     var body: some View {
         let cast = result
-        let db = Cast(context: controller.container.viewContext)
 
-        NavigationView {
             ZStack {
                 LinearGradient(gradient: Gradient(colors: [Color.kiwi, Color.limeCream]), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
@@ -84,24 +82,13 @@ struct InterpretationView: View {
             }
             .padding()
             .navigationTitle(cast.odu)
-            .toolbar {  
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                        
-                    } label: {
-                        Image(systemName: "arrow.left")
-                    }
-                }
-                
+            .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: CastsListView(cast: castResults).environmentObject(controller)) {
                         Image(systemName: "list.bullet.circle")
                     }
                 }
             }
-            .ignoresSafeArea()
-        }
     }
 }
 

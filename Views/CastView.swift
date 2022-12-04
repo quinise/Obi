@@ -19,12 +19,11 @@ struct CastView: View {
     @State private var orientation = UIDeviceOrientation.unknown
       
     @ViewBuilder var subView : some View {
-        NavigationView {
             ZStack {
                 Color.limeCream
-                    .ignoresSafeArea(.all)
+                    .ignoresSafeArea()
                     VStack(spacing: 12) {
-                        Text((cast.yesNoMaybe ??  "")).font(.title)
+                        Text((cast.yesNoMaybe)).font(.title)
                             .padding()
                         Divider().frame(width: 200)
                             .overlay(Color.forrest)
@@ -65,7 +64,6 @@ struct CastView: View {
             .padding() // ToDo change to custom green color
             .navigationBarTitle(cast.title, displayMode: .inline)
             }
-        }
     }
     
     var body: some View {
