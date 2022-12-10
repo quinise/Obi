@@ -8,13 +8,95 @@
 import CoreData
 import SwiftUI
 
-extension Color {
-    static let kiwi = Color(red: 141 / 255, green: 179 / 255, blue: 0 / 255)
-    static let limeCream = Color(red: 240 / 255, green: 250 / 255, blue: 202 / 255)
-    static let forrest = Color(red: 34/255, green: 139/255, blue: 34/255)
+struct WelcomeView: View {
+    @State private var orientation = UIDeviceOrientation.unknown
+    @State private var isShowingInterpretationView = false
+    @EnvironmentObject var controller: CoreDataController
+    @State var finalResult: CastResult = CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+    let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
+    let result: [CastResult] = loadStaticData()
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color.limeCream
+                VStack(spacing: 12) {
+                Text("Aalaffia!")
+                    .font(Font.custom("Acme-Regular", size: 58, relativeTo: .title))
+                    .onShake {
+                        finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                    }
+                Image("kola-nuts")
+                    .resizable()
+                    .frame(width: 300, height: 300)
+                Button {
+                    finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                    isShowingInterpretationView = true;
+                } label: {
+                    Text("Cast")
+                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 30, relativeTo: .title))
+                }
+                .font(.system(size:32)) // prefered to title
+                .foregroundColor(Color.white) // font color
+                .padding()
+                .background(Color.kiwi)
+                .fontWeight(.bold)
+                .cornerRadius(30)
+                .shadow(radius: 20)
+            }
+            .foregroundColor(Color.forrest)
+            .navigationDestination(isPresented: $isShowingInterpretationView) {
+                InterpretationView(result: finalResult).environmentObject(controller)
+            }
+            .padding()
+            .background(Color.limeCream)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: CastsListView(cast: result).environment(\.managedObjectContext, controller.container.viewContext).environmentObject(controller)) {
+                        Image(systemName: "list.bullet.circle")
+                    }
+                }
+            }
+            }
+            .ignoresSafeArea(.all)
+        }
+        .ignoresSafeArea(.all)
+        .onRotate { newOrientation in
+            orientation = newOrientation
+        }
+    }
 }
 
-// The notification we'll send when a shake gesture happens.
+extension WelcomeView {
+    static func loadStaticData() -> [CastResult] {
+        return [
+            CastResult(odu: "Aalaffia - Ogbe", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Symbolizes good general welfare", title: ""),
+            CastResult(odu: "Yeku - Oyeku", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "No light - potential delays and possible protection from ancestors...", title: ""),
+            CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
+            CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
+            CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+            CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+            CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
+            CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Abundance", title: ""),
+            CastResult(odu: "Ejife-Ejire", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "criminality, arguments", title: ""),
+            CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
+            CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
+            CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
+            CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
+            CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Up", interpretation: "Hard work is rewarded", title: ""),
+            CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Hard work is rewarded", title: "")
+        ]
+    }
+}
+
+extension Color {
+    static let kiwi = Color("kiwi")
+    static let limeCream = Color("limeCream")
+    static let forrest = Color("forrest")
+}
+
+// The notification of shake gesture.
 extension UIDevice {
     static let deviceDidShakeNotification = Notification.Name(rawValue: "deviceDidShakeNotification")
 }
@@ -67,100 +149,6 @@ extension View {
         self.modifier(DeviceRotationViewModifier(action: action))
     }
 }
-
-struct WelcomeView: View {
-    @State private var orientation = UIDeviceOrientation.unknown
-    @State private var isShowingInterpretationView = false
-    @EnvironmentObject var controller: CoreDataController
-    @State var finalResult: CastResult = CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-    let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
-    let result: [CastResult] = [
-        CastResult(odu: "Aalaffia - Ogbe", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Symbolizes good general welfare", title: ""),
-        CastResult(odu: "Yeku - Oyeku", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "No light - potential delays and possible protection from ancestors...", title: ""),
-        CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
-        CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: ""),
-        CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
-        CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
-        CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Abundance", title: ""),
-        CastResult(odu: "Okanran-Aje", timestamp: Date(), yesNoMaybe: "No", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "Abundance", title: ""),
-        CastResult(odu: "Ejife-Ejire", timestamp: Date(), yesNoMaybe: "Yes", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "criminality, arguments", title: ""),
-        CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
-        CastResult(odu: "Ejife-Ero", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "calmness and whole-mindedness", title: ""),
-        CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Down", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
-        CastResult(odu: "Obita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Up", interpretation: "No arguments, living harmoniously", title: ""),
-        CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Up", interpretation: "Hard work is rewarded", title: ""),
-        CastResult(odu: "Akita-Etawa", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Up", femaleObi1: "FemaleObi1Up", femaleObi2: "FemaleObi2Down", interpretation: "Hard work is rewarded", title: "")
-       ]
-    
-    @ViewBuilder var subView : some View {
-        NavigationStack {
-        ZStack {
-            Color.limeCream
-                .ignoresSafeArea()
-            VStack(spacing: 12) {
-            Text("Aalaffia!")
-                .font(Font.custom("Acme", size: 58, relativeTo: .title)) //ToDo custom font not implemented
-                .onShake {
-                    finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-                }
-            Image("kola-nuts")
-                .resizable()
-                .frame(width: 300, height: 300)
-            Button {
-                finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-                isShowingInterpretationView = true;
-            } label: {
-                Text("Cast")
-            }
-            .font(.system(size:32)) // prefered to title
-            .foregroundColor(Color.white) // font color
-            .padding()
-            .buttonStyle(.bordered)
-            .background(Color.kiwi) // ToDo remove inner darker rectangle
-            .fontWeight(.bold)
-            .cornerRadius(30)
-            .shadow(radius: 20)
-        }
-        .navigationDestination(isPresented: $isShowingInterpretationView) {
-            InterpretationView(result: finalResult).environmentObject(controller)
-        }
-    }
-        }
-        .padding()  
-        .background(Color.limeCream)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(Color.forrest)
-        .ignoresSafeArea(.all)
-        .navigationTitle("Mobi - Obi for iOS")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: CastsListView(cast: result).environment(\.managedObjectContext, controller.container.viewContext).environmentObject(controller)) {
-                    Image(systemName: "list.bullet.circle")
-                }
-            }
-        }
-    }
-    var body: some View {
-        Group {
-            if orientation.isLandscape {
-                ScrollView(.vertical, showsIndicators: false) { //ToDo scroll scrolling all the way down
-                    subView
-                }
-            } else {
-                VStack {
-                    subView
-                    Spacer()
-                }
-            }
-        }
-        .padding(.top, 10)
-        .onRotate { newOrientation in
-            orientation = newOrientation
-        }
-    }
-        
-}
-
 
 //struct WelcomeView_Previews: PreviewProvider {
 //    static var previews: some View {

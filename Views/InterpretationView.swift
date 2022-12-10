@@ -24,18 +24,18 @@ struct InterpretationView: View {
         return formatter
     }()
     
-    
-    // ToDo this view needs more space between the title and YesNoMaybe property in landscape mode, this also needs to cover horizontal safeareas in portrait mode
     var body: some View {
         let cast = result
 
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [Color.kiwi, Color.limeCream]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea()
+                Color.limeCream
+                    .ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 12) {
-                    Text((cast.yesNoMaybe)).font(.title)
-                    Text(dateFormatter.string(from: cast.timestamp))
-                    Text(cast.interpretation)
+                    Text(cast.odu).font(Font.custom("Acme-Regular", size: 25, relativeTo: .title))
+                    Text((cast.yesNoMaybe))
+                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    Text(dateFormatter.string(from: cast.timestamp)).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    Text(cast.interpretation).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
                         .padding()
                     HStack {
                         Image(cast.maleObi1)
@@ -53,19 +53,18 @@ struct InterpretationView: View {
                     }
                         .padding()
                     Button("Save Cast") {
-                        print(title)
                         presentAlert = true
                     }
                     .buttonStyle(.bordered)
                     .background(Color.kiwi)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
+                    .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
                     .cornerRadius(30)
                     .shadow(radius: 20)
                     .alert("Cast Title", isPresented: $presentAlert, actions: {
-                        TextField("Cast Title", text: $title)
+                        TextField("Cast Title", text: $title).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
                         Button("Save", action: {
-                            //ToDo data validation on title, must not be code
                             var castResult = CastResult(odu: cast.odu, timestamp: cast.timestamp, yesNoMaybe: cast.yesNoMaybe, maleObi1: cast.maleObi1, maleObi2: cast.maleObi2, femaleObi1: cast.femaleObi1, femaleObi2: cast.femaleObi2, interpretation: cast.interpretation, title: title)
                             castResult.title = title
                             castResults.append(castResult)
@@ -74,14 +73,13 @@ struct InterpretationView: View {
                                 UserDefaults.standard.set(encoded, forKey: "cast")
                             }
                         })
-                        Button("Cancel", role: .cancel, action: {})
+                        Button("Cancel", role: .cancel, action: {}).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
                     }, message: {
-                        Text("Please enter a title")
+                        Text("Please enter a title").font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
                     })
                 }
             }
             .padding()
-            .navigationTitle(cast.odu)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: CastsListView(cast: castResults).environmentObject(controller)) {
@@ -89,6 +87,7 @@ struct InterpretationView: View {
                     }
                 }
             }
+            .background(Color.limeCream)
     }
 }
 

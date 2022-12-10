@@ -17,72 +17,54 @@ struct CastView: View {
     }()
     
     @State private var orientation = UIDeviceOrientation.unknown
-      
-    @ViewBuilder var subView : some View {
-            ZStack {
-                Color.limeCream
-                    .ignoresSafeArea()
-                    VStack(spacing: 12) {
-                        Text((cast.yesNoMaybe)).font(.title)
-                            .padding()
-                        Divider().frame(width: 200)
-                            .overlay(Color.forrest)
-                        HStack {
-                        Text("Odu: ")
-                        Text(cast.odu)
-                        }
-                        HStack {
-                            Text("Cast Date ").bold()
-                                .padding(.trailing, 23)
-                            Text(dateFormatter.string(from: cast.timestamp))
-                        }
-                        .padding()
-                        Divider().frame(width: 200)
-                            .overlay(Color.forrest)
-                        Text("Interpretation").bold()
-                        Text(cast.interpretation)
-                    HStack {
-                        Image(cast.maleObi1)
-                            .resizable()
-                            .scaledToFit()
-                        Image(cast.maleObi2)
-                            .resizable()
-                            .scaledToFit()
-                        Image(cast.femaleObi1)
-                            .resizable()
-                            .scaledToFit()
-                        Image(cast.femaleObi2)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    .padding()
-                    .buttonStyle(.bordered)
-                    .foregroundColor(.white)
-                    .cornerRadius(30)
-                    .shadow(radius: 20)
-                }
-            .padding() // ToDo change to custom green color
-            .navigationBarTitle(cast.title, displayMode: .inline)
-            }
-    }
     
     var body: some View {
-        Group {
-            if orientation.isLandscape {
-                ScrollView(.vertical, showsIndicators: false) { //ToDo scroll not scrolling all the way down
-                    subView
-                }
-                
-            } else {
-                VStack {
-                    subView
-                    Spacer()
+        ZStack {
+            Color.limeCream
+                .ignoresSafeArea(.all, edges: .all)
+                VStack(spacing: 12) {
+                    Text(cast.title)
+                        .font(Font.custom("Acme-Regular", size: 25, relativeTo: .title))
+                    Text((cast.yesNoMaybe)).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .padding()
+                    Divider().frame(width: 200)
+                        .overlay(Color.forrest)
+                    HStack {
+                    Text("Odu: ").font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    Text(cast.odu).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    }
+                    HStack {
+                        Text("Cast Date ").bold()
+                            .padding(.trailing, 23)
+                            .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        Text(dateFormatter.string(from: cast.timestamp))
+                            .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    }
+                    .padding()
+                    Divider().frame(width: 200)
+                        .overlay(Color.forrest)
+                    Text("Interpretation").bold()
+                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    Text(cast.interpretation)
+                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                HStack {
+                    Image(cast.maleObi1)
+                        .resizable()
+                        .scaledToFit()
+                    Image(cast.maleObi2)
+                        .resizable()
+                        .scaledToFit()
+                    Image(cast.femaleObi1)
+                        .resizable()
+                        .scaledToFit()
+                    Image(cast.femaleObi2)
+                        .resizable()
+                        .scaledToFit()
                 }
             }
         }
-        .onRotate { newOrientation in
-            orientation = newOrientation
-        }
+        .foregroundColor(Color.forrest)
+        .ignoresSafeArea(.all)
     }
 }
 
