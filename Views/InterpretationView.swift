@@ -15,7 +15,7 @@ struct InterpretationView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title)]) var Obi: FetchedResults<Cast>
     let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
     @State var castResult: [Cast] = []
-    @State var castResults: [CastResult] = []
+    @State var castResults: [CastResult]
     @State var result: CastResult
     
     let dateFormatter: DateFormatter = {
