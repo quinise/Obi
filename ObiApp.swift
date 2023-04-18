@@ -16,7 +16,6 @@ struct ObiApp: App {
     }
     @Environment(\.scenePhase) var scenePhase
     @StateObject var controller: CoreDataController
-//    @StateObject private var castData = CastData()
     
     var body: some Scene {
         WindowGroup {
