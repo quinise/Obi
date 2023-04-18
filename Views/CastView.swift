@@ -24,29 +24,29 @@ struct CastView: View {
                 .ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 12) {
                     Text(cast.title)
-                        .font(Font.custom("Acme-Regular", size: 25, relativeTo: .title))
-                    Text((cast.yesNoMaybe)).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .font(.custom("Sriracha-Regular", size: 25, relativeTo: .title))
+                    Text((cast.yesNoMaybe)).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         .padding()
                     Divider().frame(width: 200)
                         .overlay(Color.forrest)
                     HStack {
-                    Text("Odu: ").font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
-                    Text(cast.odu).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    Text("Odu: ").font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                        Text(cast.odu).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }
                     HStack {
                         Text("Cast Date ").bold()
                             .padding(.trailing, 23)
-                            .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                            .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         Text(dateFormatter.string(from: cast.timestamp))
-                            .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                            .font(Font.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }
                     .padding()
                     Divider().frame(width: 200)
                         .overlay(Color.forrest)
                     Text("Interpretation").bold()
-                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     Text(cast.interpretation)
-                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                 HStack {
                     Image(cast.maleObi1)
                         .resizable()

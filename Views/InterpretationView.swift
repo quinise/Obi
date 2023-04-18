@@ -31,11 +31,11 @@ struct InterpretationView: View {
                 Color.limeCream
                     .ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 12) {
-                    Text(cast.odu).font(Font.custom("Acme-Regular", size: 25, relativeTo: .title))
+                    Text(cast.odu).font(.custom("Sriracha-Regular", size: 25, relativeTo: .title))
                     Text((cast.yesNoMaybe))
-                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
-                    Text(dateFormatter.string(from: cast.timestamp)).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
-                    Text(cast.interpretation).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                    Text(dateFormatter.string(from: cast.timestamp)).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                    Text(cast.interpretation).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         .padding()
                     HStack {
                         Image(cast.maleObi1)
@@ -59,11 +59,11 @@ struct InterpretationView: View {
                     .background(Color.kiwi)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
-                    .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                    .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     .cornerRadius(30)
                     .shadow(radius: 20)
                     .alert("Cast Title", isPresented: $presentAlert, actions: {
-                        TextField("Cast Title", text: $title).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        TextField("Cast Title", text: $title).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         Button("Save", action: {
                             var castResult = CastResult(odu: cast.odu, timestamp: cast.timestamp, yesNoMaybe: cast.yesNoMaybe, maleObi1: cast.maleObi1, maleObi2: cast.maleObi2, femaleObi1: cast.femaleObi1, femaleObi2: cast.femaleObi2, interpretation: cast.interpretation, title: title)
                             castResult.title = title
@@ -73,9 +73,9 @@ struct InterpretationView: View {
                                 UserDefaults.standard.set(encoded, forKey: "cast")
                             }
                         })
-                        Button("Cancel", role: .cancel, action: {}).font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        Button("Cancel", role: .cancel, action: {}).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }, message: {
-                        Text("Please enter a title").font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        Text("Please enter a title").font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     })
                 }
             }

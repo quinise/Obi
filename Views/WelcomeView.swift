@@ -18,6 +18,15 @@ struct WelcomeView: View {
     
     
     init () {
+        for familyName in UIFont.familyNames {
+            print(familyName)
+            for fontName in UIFont.fontNames(forFamilyName: familyName) {
+                print("-- \(fontName)")
+            }
+        }
+        
+        
+        
         if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
            let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
             result = castData
@@ -30,30 +39,30 @@ struct WelcomeView: View {
             ZStack {
                 Color.limeCream
                 VStack(spacing: 12) {
-                Text("Aalaffia!")
-                    .font(Font.custom("Acme-Regular", size: 58, relativeTo: .title))
-                    .onShake {
+                    Text("Aalaffia!")
+                        .font(Font.custom("JustAnotherHand-Regular", size: 58, relativeTo: .title))
+                        .onShake {
+                            finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                            isShowingInterpretationView = true;
+                        }
+                    Image("kola-nuts")
+                        .resizable()
+                        .frame(width: 300, height: 300)
+                    Button {
                         finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
                         isShowingInterpretationView = true;
+                    } label: {
+                        Text("Cast")
+                            .font(Font.custom("JustAnotherHand-Regular", size: 30, relativeTo: .title))
                     }
-                Image("kola-nuts")
-                    .resizable()
-                    .frame(width: 300, height: 300)
-                Button {
-                    finalResult = result.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-                    isShowingInterpretationView = true;
-                } label: {
-                    Text("Cast")
-                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 30, relativeTo: .title))
-                }
-                .font(.system(size:32)) // prefered to title
-                .foregroundColor(Color.white) // font color
-                .padding()
-                .background(Color.kiwi)
-                .fontWeight(.bold)
-                .cornerRadius(30)
-                .shadow(radius: 20)
-                }
+                    .font(.system(size:32)) // prefered to title
+                    .foregroundColor(Color.white) // font color
+                    .padding()
+                    .background(Color.kiwi)
+                    .fontWeight(.bold)
+                    .cornerRadius(50)
+                    .shadow(radius: 20)
+                    }
                 
             .foregroundColor(Color.forrest)
             .navigationDestination(isPresented: $isShowingInterpretationView) {

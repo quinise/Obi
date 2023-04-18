@@ -18,13 +18,13 @@ struct CastsListView: View {
         ZStack {
             Color.limeCream
         Text("Previous Readings") // Todo: this is not visible
-            .font(Font.custom("Acme-Regular", size: 20, relativeTo: .title))
+            .font(.custom("Sriracha-Regular", size: 20, relativeTo: .title))
         List {
             ForEach(cast) { cast in
                 NavigationLink (destination: CastView(cast: cast)) {
                     Text(cast.title)
                         .foregroundColor(Color.forrest)
-                        .font(Font.custom("Archivo-VariableFont_wdth,wght", size: 15, relativeTo: .title))
+                        .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                 }
             }
             .onDelete(perform: removeAtIndices)
