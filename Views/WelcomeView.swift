@@ -1,6 +1,7 @@
 //
 //  WelcomeView.swift
-//  Obi
+//
+// This view lets the user make a cast and connects them to a view (Interpretation View) that shows their cast details. This view also includes a button that connects the user to their saved casts.
 //
 //  Created by Devin Ercolano on 11/16/22.
 //
@@ -9,21 +10,11 @@ import CoreData
 import SwiftUI
 
 struct WelcomeView: View {
-    @State private var orientation = UIDeviceOrientation.unknown
+    @Binding public var casts: [CastResult]
     @State private var isShowingInterpretationView = false
-    @EnvironmentObject var controller: CoreDataController
     @State var finalResult: CastResult = CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
-    let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
     @State var result: [CastResult] = []
-    
-    
-    init () {
-        if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
-           let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
-            result = castData
-            print(result)
-        }
-    }
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
         NavigationStack {
@@ -33,39 +24,38 @@ struct WelcomeView: View {
                     Text("Aalaffia!")
                         .font(Font.custom("JustAnotherHand-Regular", size: 58, relativeTo: .title))
                         .onShake {
-                            print("Phone shaken")
-                            finalResult = Cast.data.randomElement() ?? CastResult(odu: "Did not work", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                            finalResult = CastResult.data.randomElement() ?? CastResult(odu: "Did not work", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
                             isShowingInterpretationView = true;
                         }
                     Image("kola-nuts")
                         .resizable()
                         .frame(width: 300, height: 300)
                     Button {
-                        finalResult = Cast.data.randomElement() ?? CastResult(odu: "Okanran - Ilera", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
+                        finalResult = CastResult.data.randomElement() ?? CastResult(odu: "Did not work", timestamp: Date(), yesNoMaybe: "Maybe", maleObi1: "MaleObi1Up", maleObi2: "MaleObi2Down", femaleObi1: "FemaleObi1Down", femaleObi2: "FemaleObi2Down", interpretation: "Good health and success!", title: "")
                         isShowingInterpretationView = true;
                     } label: {
                         Text("Cast")
                             .font(Font.custom("JustAnotherHand-Regular", size: 50, relativeTo: .title))
                     }
-                    .font(.system(size:32)) // prefered to title
+                    .font(.system(size:45)) // prefered to title
                     .foregroundColor(Color.white) // font color
                     .padding()
                     .background(Color.kiwi)
                     .fontWeight(.bold)
-                    .cornerRadius(50)
+                    .cornerRadius(45)
                     .shadow(radius: 20)
                     }
                 
             .foregroundColor(Color.forrest)
             .navigationDestination(isPresented: $isShowingInterpretationView) {
-                InterpretationView(castResults: result, result: finalResult).environmentObject(controller)
+                InterpretationView(result: finalResult)
             }
             .padding()
             .background(Color.limeCream)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: CastsListView(cast: result).environment(\.managedObjectContext, controller.container.viewContext).environmentObject(controller)) {
+                    NavigationLink(destination: CastsListView(saveAction: {})) {
                         Image(systemName: "list.bullet.circle")
                     }
                 }
@@ -74,12 +64,6 @@ struct WelcomeView: View {
             
             .ignoresSafeArea(.all)
         }.ignoresSafeArea(.all)
-            .onAppear {
-                if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
-                   let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
-                    result = castData
-                }
-            }
     }
 }
 

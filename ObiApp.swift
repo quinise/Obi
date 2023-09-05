@@ -1,6 +1,6 @@
 //
 //  ObiApp.swift
-//  Obi
+//  Obi - this application casts IFA Obi divination for the user. Each divine can be saved(Created, Deleted) as a cast in Core Data.
 //
 //  Created by Devin Ercolano on 11/16/22.
 //
@@ -10,22 +10,20 @@ import CoreData
 
 @main
 struct ObiApp: App {
-    init() {
-        let dataController = CoreDataController()
-        _controller = StateObject(wrappedValue: dataController)
-    }
+    @ObservedObject private var castData = CastData()
     @Environment(\.scenePhase) var scenePhase
-    @StateObject var controller: CoreDataController
+    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
-                SplashScreenView()
-                    .environment(\.managedObjectContext, controller.container.viewContext)
-                    .environmentObject(controller)
+            NavigationView {
+                SplashScreenView(casts: .constant(CastResult.data))
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
+
+            .onAppear {
+                castData.load()
+            }
         }
-        .onChange(of: scenePhase) { newValue in
-            controller.save()
-        }
-    
     }
 }

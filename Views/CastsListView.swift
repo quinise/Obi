@@ -1,6 +1,6 @@
 //
 //  CastsListView.swift
-//  Obi
+//  This view displays a list of saved cast with the options to delete one or select it and see it's details.
 //
 //  Created by Devin Ercolano on 11/16/22.
 //
@@ -9,10 +9,11 @@ import SwiftUI
 import CoreData
 
 struct CastsListView: View {
-    @EnvironmentObject var controller: CoreDataController
-    @State var cast: [CastResult]
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.title)]) var castList: FetchedResults<Cast>
-    @FetchRequest(sortDescriptors: []) var casts: FetchedResults<Cast>
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest<Cast>(entity: Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
+    var casts: FetchedResults<Cast>
+    
+    let saveAction: () -> Void
     
     var body: some View {
         ZStack {
@@ -20,39 +21,35 @@ struct CastsListView: View {
         Text("Previous Readings") // Todo: this is not visible
             .font(.custom("Sriracha-Regular", size: 20, relativeTo: .title))
         List {
-            ForEach(cast) { cast in
-                NavigationLink (destination: CastView(cast: cast)) {
-                    Text(cast.title)
+            ForEach(casts, id: \.id) { cast in
+                NavigationLink(destination: CastView(cast: cast)) {
+                    Text(cast.title ?? "")
                         .foregroundColor(Color.forrest)
                         .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                 }
             }
-            .onDelete(perform: removeAtIndices)
+            .onDelete(perform: deleteItems)
         }
         .background(Color.limeCream)
         .scrollContentBackground(.hidden)
         .foregroundColor(Color.forrest)
-        .onAppear {
-            if let data = UserDefaults.standard.object(forKey: "cast") as? Data,
-               let castData = try? JSONDecoder().decode([CastResult].self, from: data) {
-                cast = castData
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            managedObjectContext.perform {
+                offsets.map { casts[$0] }.forEach(managedObjectContext.delete)
+                
+                do {
+                    try managedObjectContext.save()
+                } catch {
+                    #if DEBUG
+                    fatalError()
+                    #endif
+                }
             }
         }
-        }
-    }
-    
-    func getData() -> Cast {
-        let cast = Cast(context: controller.container.viewContext)
-        return cast
-    }
-    
-    func removeAtIndices(at offsets: IndexSet) {
-        for offset in offsets {
-            let cast = casts[offset]
-            controller.delete(cast)
-        }
-        
-        controller.save()
     }
 }
 

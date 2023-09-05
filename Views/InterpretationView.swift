@@ -1,6 +1,6 @@
 //
 //  InterpretationView.swift
-//  MyObi
+//  This view shows the user the details of a cast that they just made by clicking the cast button in the Welcome View.
 //
 //  Created by Devin Ercolano on 11/16/22.
 //
@@ -8,15 +8,20 @@
 import SwiftUI
 
 struct InterpretationView: View {
-    @EnvironmentObject var controller: CoreDataController
     @State private var presentAlert = false
-    @State private var title: String = ""
-    @Environment(\.presentationMode) var presentationMode
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.title)]) var Obi: FetchedResults<Cast>
-    let request = FetchRequest<Cast>(entity:Cast.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Cast.timestamp, ascending: true)])
-    @State var castResult: [Cast] = []
-    @State var castResults: [CastResult]
     @State var result: CastResult
+    @State private var timestampObject = Date()
+    @State private var yesNoMaybeString = ""
+    @State private var maleObi1String = ""
+    @State private var maleObi2String = ""
+    @State private var femaleObi1String = ""
+    @State private var femaleObi2String = ""
+    @State private var interpretationString = ""
+    @State private var titleString = ""
+    @State private var oduString = ""
+    
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.presentationMode) var presentationMode
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -26,7 +31,7 @@ struct InterpretationView: View {
     
     var body: some View {
         let cast = result
-
+        
             ZStack {
                 Color.limeCream
                     .ignoresSafeArea(.all, edges: .all)
@@ -63,15 +68,9 @@ struct InterpretationView: View {
                     .cornerRadius(30)
                     .shadow(radius: 20)
                     .alert("Cast Title", isPresented: $presentAlert, actions: {
-                        TextField("Cast Title", text: $title).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                        TextField("Cast Title", text: $titleString).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         Button("Save", action: {
-                            var castResult = CastResult(odu: cast.odu, timestamp: cast.timestamp, yesNoMaybe: cast.yesNoMaybe, maleObi1: cast.maleObi1, maleObi2: cast.maleObi2, femaleObi1: cast.femaleObi1, femaleObi2: cast.femaleObi2, interpretation: cast.interpretation, title: title)
-                            castResult.title = title
-                            castResults.append(castResult)
-                            controller.save(castResults)
-                            if let encoded = try? JSONEncoder().encode(castResults) {
-                                UserDefaults.standard.set(encoded, forKey: "cast")
-                            }
+                            self.saveCast()
                         })
                         Button("Cancel", role: .cancel, action: {}).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }, message: {
@@ -82,13 +81,39 @@ struct InterpretationView: View {
             .padding()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: CastsListView(cast: castResults).environmentObject(controller)) {
+                    NavigationLink(destination: CastsListView(saveAction: {})) {
                         Image(systemName: "list.bullet.circle")
                     }
                 }
             }
             .background(Color.limeCream)
     }
+    
+    private func saveCast() {
+            let newCast = Cast(context: self.managedObjectContext)
+                newCast.id = UUID()
+                newCast.title = titleString
+                newCast.odu = result.odu
+                newCast.interpretation = result.interpretation
+                newCast.yesNoMaybe = result.yesNoMaybe
+                newCast.maleObi1 = result.maleObi1
+                newCast.maleObi2 = result.maleObi2
+                newCast.femaleObi1 = result.femaleObi1
+                newCast.femaleObi2 = result.femaleObi2
+                newCast.timestamp = result.timestamp
+                
+            do {
+                try self.managedObjectContext.save()
+                //Always a good idea to dimiss after saving
+                self.presentationMode.wrappedValue.dismiss()
+            } catch {
+                self.managedObjectContext.delete(newCast)
+//                self.dataAlert.toggle()
+                //            #if DEBUG
+                //            fatalError()
+                //            #endif
+            }
+        }
 }
 
 //struct InterpretationView_Previews: PreviewProvider {

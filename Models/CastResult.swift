@@ -1,6 +1,6 @@
 //
 //  Result.swift
-//  MyObi
+//  This file defines a cast that is passed from view to view. It provides an array of possible cast permutations.
 //
 //  Created by Devin Ercolano on 11/16/22.
 //

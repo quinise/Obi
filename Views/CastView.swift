@@ -1,6 +1,7 @@
 //
 //  CastView.swift
-//  Obi
+//
+// This view shows the user the details of a cast that they selected from the cast list in the CastListView
 //
 //  Created by Devin Ercolano on 12/3/22.
 //
@@ -8,56 +9,55 @@
 import SwiftUI
 
 struct CastView: View {
-    @State var cast: CastResult
-    
+    var cast: Cast
+    @Environment(\.managedObjectContext) var managedObjectContext
+
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         return formatter
     }()
-    
-    @State private var orientation = UIDeviceOrientation.unknown
-    
+        
     var body: some View {
         ZStack {
             Color.limeCream
                 .ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 12) {
-                    Text(cast.title)
+                    Text(cast.title ?? "")
                         .font(.custom("Sriracha-Regular", size: 25, relativeTo: .title))
-                    Text((cast.yesNoMaybe)).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                    Text((cast.yesNoMaybe ?? "")).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                         .padding()
                     Divider().frame(width: 200)
                         .overlay(Color.forrest)
                     HStack {
                     Text("Odu: ").font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
-                        Text(cast.odu).font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                        Text(cast.odu ?? "").font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }
                     HStack {
                         Text("Cast Date ").bold()
                             .padding(.trailing, 23)
                             .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
-                        Text(dateFormatter.string(from: cast.timestamp))
-                            .font(Font.custom("Sriracha-Regular", size: 15, relativeTo: .title))
+                        Text(dateFormatter.string(from: cast.timestamp ?? Date()))
+                            .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                     }
                     .padding()
                     Divider().frame(width: 200)
                         .overlay(Color.forrest)
                     Text("Interpretation").bold()
                         .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
-                    Text(cast.interpretation)
+                    Text(cast.interpretation ?? "")
                         .font(.custom("Sriracha-Regular", size: 15, relativeTo: .title))
                 HStack {
-                    Image(cast.maleObi1)
+                    Image(cast.maleObi1 ?? "")
                         .resizable()
                         .scaledToFit()
-                    Image(cast.maleObi2)
+                    Image(cast.maleObi2 ?? "")
                         .resizable()
                         .scaledToFit()
-                    Image(cast.femaleObi1)
+                    Image(cast.femaleObi1 ?? "")
                         .resizable()
                         .scaledToFit()
-                    Image(cast.femaleObi2)
+                    Image(cast.femaleObi2 ?? "")
                         .resizable()
                         .scaledToFit()
                 }
