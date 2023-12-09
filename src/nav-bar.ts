@@ -10,16 +10,16 @@ class Navbar extends LitElement {
 
     render() {
         return html `
-            <header class="fixed bg-peach top-0 left-0 w-full py-0 px-0 text-left font-normal leading-6 text-darkBrown shadow">
-                <nav class= "px-3 sm:px-4 bg-peach">
+            <header class="flex items-center fixed bg-peach top-0 left-0 w-full py-0 px-0 text-left font-normal leading-6 text-darkBrown shadow">
+                <nav class="px-3 sm:px-4 bg-peach">
                     <div class="container mx-auto flex flex-wrap items-center justify-between">
                         <a href="/dashboard" class="cursor-pointer flex items-center">
                             <img class="mr-3 h-6 md:h-16 md:mr-0 sm:h-8" src=${bannerIcon} alt="crown logo">
                         </a>
-                        <button type="button" class="md:hidden hover:bg-sunflower inline-flex items-center rounded-lg p-2 text-darkBrown-500 hover:bg-darkBrown-100 ">
+                        <button type="button" class="md:hidden l-3 hover:bg-sunflower inline-flex items-center rounded-lg p-2 text-darkBrown-500 hover:bg-darkBrown-100">
                             <span class="sr-only">Open the mobile menu</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-none">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>  
                         </button>
 
@@ -41,7 +41,7 @@ class Navbar extends LitElement {
                     </div>
 
                     <!-- Mobile Nav -->
-                    <div class="sm:hidden mt-8">
+                    <div class="mobile-nav md:hidden mt-8">
                         <ul class="space-y-1 px-2 pb-3">
                             <li class="bg-peach hover:bg-sunflower uppercase block rounded-md px-3 py-2 font-medium text-darkBrown">
                                 <a href="/dashboard">
