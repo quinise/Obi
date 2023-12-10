@@ -28,18 +28,18 @@ export class UserDashboard extends LitElement {
 
   render() {
     return html`
-    <h1 class="mt-60 text-center">Projects</h1>
+    <h1 class="mt-60 drop-shadow-lg shadow-darkBrown/50 text-center">Projects</h1>
     <div class="mx-auto mt-20 grid gap-4 grid-cols-2 w-2/3">
-      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown">
+      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown shadow-lg shadow-darkBrown/50">
       Dummy Project 0
       </button>
-      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown">
+      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown shadow-lg shadow-darkBrown/50">
       Dummy Project 1
       </button>
-      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown">
+      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown shadow-lg shadow-darkBrown/50">
       Dummy Project 2
       </button>
-      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown">
+      <button class="flex flex-col w-full p-6 items-center gap-8 rounded-md border-[1px] border-border_sm bg-sunflower text-darkBrown shadow-lg shadow-darkBrown/50">
       Dummy Project 4
       </button>
     </div>

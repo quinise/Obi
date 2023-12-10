@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { TWStyles } from './../tw.js';
 
 @customElement('app-footer')
-class Footer extends LitElement {
+export class AppFooter extends LitElement {
 
     static styles = [css ``, TWStyles];
 
